@@ -22,8 +22,10 @@ class ThemeProvider extends InheritedWidget {
 
 /// This widget is used to switch the theme of the app at runtime.
 /// Make sure you set the [DynamicThemeDataWidget] as parent of a [MaterialApp] or [CupertinoApp].
-/// These should have the [themeMode] set to ThemeSwitcher.of(context).themeMode.
-/// ALso the theme should be set to ThemeSwitcher.of(context).getThemeData(ThemeSwitcher.of(context).colorScheme).
+/// Make sure to set these lines in the [MaterialApp] or [CupertinoApp]:
+/// themeMode: ThemeProvider.of(context).themeMode,
+/// theme: ThemeProvider.of(context).lightColorScheme,
+/// darkTheme: ThemeProvider.of(context).darkColorScheme,
 class DynamicThemeDataWidget extends StatefulWidget {
   final ThemeData? lightThemeData;
   final ThemeData darkThemeData;
@@ -37,9 +39,17 @@ class DynamicThemeDataWidget extends StatefulWidget {
 }
 
 class DynamicThemeDataWidgetState extends State<DynamicThemeDataWidget> {
-  ThemeData? darkColorScheme;
-  ThemeData? lightColorScheme;
-  ThemeMode? themeMode;
+  late ThemeData darkTheme;
+  late ThemeData lightTheme;
+  late ThemeMode themeMode;
+
+  @override
+  void initState() {
+    super.initState();
+    darkTheme = widget.darkThemeData;
+    lightTheme = widget.lightThemeData ?? widget.darkThemeData;
+    themeMode = widget.themeMode;
+  }
 
   /// This method sets the theme to the given theme.
   /// Which theme is set is determined by the brightness attribute of the Theme.
@@ -47,30 +57,32 @@ class DynamicThemeDataWidgetState extends State<DynamicThemeDataWidget> {
   void setThemeData(final ThemeData theme) {
     if (theme.brightness == Brightness.light) {
       setState(() {
-        lightColorScheme = theme;
+        lightTheme = theme;
       });
     } else {
       setState(() {
-        darkColorScheme = theme;
+        darkTheme = theme;
       });
     }
   }
 
-  ThemeData getThemeData(ColorScheme? colorScheme) {
-    return ThemeData(
-      useMaterial3: true,
-      colorScheme: colorScheme,
-      appBarTheme: AppBarTheme(
-        iconTheme: Theme.of(context).iconTheme.copyWith(
-          size: 30,
-        ),
-      ),
-      cardTheme: CardTheme(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
-    );
+  /// This method sets the colorScheme to the given colorScheme.
+  /// Which colorScheme is set is determined by the brightness attribute of the ColorScheme.
+  /// Keep in mind that the theme is not changed by this method.
+  void setColorScheme(final ColorScheme colorScheme) {
+    if (colorScheme.brightness == Brightness.light) {
+      setState(() {
+        lightTheme = lightTheme.copyWith(
+          colorScheme: colorScheme,
+        );
+      });
+    } else {
+      setState(() {
+        darkTheme = darkTheme.copyWith(
+          colorScheme: colorScheme,
+        );
+      });
+    }
   }
 
   /// This method sets the themeMode to the given themeMode.
@@ -82,9 +94,6 @@ class DynamicThemeDataWidgetState extends State<DynamicThemeDataWidget> {
 
   @override
   Widget build(BuildContext context) {
-    darkColorScheme = darkColorScheme ?? widget.darkThemeData;
-    lightColorScheme = lightColorScheme ?? widget.lightThemeData;
-    themeMode = themeMode ?? widget.themeMode;
     return ThemeProvider(
       data: this,
       child: widget.child,
