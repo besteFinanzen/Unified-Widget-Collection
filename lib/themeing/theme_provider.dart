@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
-class ThemeProvider extends InheritedWidget {
+class DynamicThemeProvider extends InheritedWidget {
   final DynamicThemeDataWidgetState data;
 
-  const ThemeProvider({super.key,
+  const DynamicThemeProvider({super.key,
     required this.data,
     required super.child,
   });
 
   static DynamicThemeDataWidgetState of(context) {
-    return (context.dependOnInheritedWidgetOfExactType<ThemeProvider>()
-    as ThemeProvider)
+    return (context.dependOnInheritedWidgetOfExactType<DynamicThemeProvider>()
+    as DynamicThemeProvider)
         .data;
   }
 
   @override
-  bool updateShouldNotify(ThemeProvider oldWidget) {
+  bool updateShouldNotify(DynamicThemeProvider oldWidget) {
     return this != oldWidget;
   }
 }
@@ -66,6 +66,12 @@ class DynamicThemeDataWidgetState extends State<DynamicThemeDataWidget> {
     }
   }
 
+  /// This forces the theme to be updated.
+  /// Don't use this method if you don't have to.
+  void forceUpdate() {
+    setState(() {});
+  }
+
   /// This method sets the colorScheme to the given colorScheme.
   /// Which colorScheme is set is determined by the brightness attribute of the ColorScheme.
   /// Keep in mind that the theme is not changed by this method.
@@ -94,7 +100,7 @@ class DynamicThemeDataWidgetState extends State<DynamicThemeDataWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ThemeProvider(
+    return DynamicThemeProvider(
       data: this,
       child: widget.child,
     );
