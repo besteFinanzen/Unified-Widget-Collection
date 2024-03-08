@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
-class _ThemeDataSwitcher extends InheritedWidget {
+class ThemeProvider extends InheritedWidget {
   final DynamicThemeDataWidgetState data;
 
-  const _ThemeDataSwitcher({
+  const ThemeProvider({super.key,
     required this.data,
     required super.child,
   });
 
   static DynamicThemeDataWidgetState of(context) {
-    return (context.dependOnInheritedWidgetOfExactType<_ThemeDataSwitcher>()
-    as _ThemeDataSwitcher)
+    return (context.dependOnInheritedWidgetOfExactType<ThemeProvider>()
+    as ThemeProvider)
         .data;
   }
 
   @override
-  bool updateShouldNotify(_ThemeDataSwitcher oldWidget) {
+  bool updateShouldNotify(ThemeProvider oldWidget) {
     return this != oldWidget;
   }
 }
@@ -85,7 +85,7 @@ class DynamicThemeDataWidgetState extends State<DynamicThemeDataWidget> {
     darkColorScheme = darkColorScheme ?? widget.darkThemeData;
     lightColorScheme = lightColorScheme ?? widget.lightThemeData;
     themeMode = themeMode ?? widget.themeMode;
-    return _ThemeDataSwitcher(
+    return ThemeProvider(
       data: this,
       child: widget.child,
     );
