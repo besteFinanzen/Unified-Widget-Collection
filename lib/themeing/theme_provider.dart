@@ -23,9 +23,9 @@ class DynamicThemeProvider extends InheritedWidget {
 /// This widget is used to switch the theme of the app at runtime.
 /// Make sure you set the [DynamicThemeDataWidget] as parent of a [MaterialApp] or [CupertinoApp].
 /// Make sure to set these lines in the [MaterialApp] or [CupertinoApp]:
-/// themeMode: ThemeProvider.of(context).themeMode,
-/// theme: ThemeProvider.of(context).lightColorScheme,
-/// darkTheme: ThemeProvider.of(context).darkColorScheme,
+/// themeMode: DynamicThemeProvider.of(context).themeMode,
+/// theme: DynamicThemeProvider.of(context).lightTheme,
+/// darkTheme: darkTheme: DynamicThemeProvider.of(context).darkTheme,
 class DynamicThemeDataWidget extends StatefulWidget {
   final ThemeData? lightThemeData;
   final ThemeData darkThemeData;
