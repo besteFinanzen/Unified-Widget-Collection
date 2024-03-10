@@ -8,6 +8,6 @@ extension ColorForBrigntess on Brightness {
 
 extension ContrastForColor on Color {
   Color get contrastColor {
-    return ThemeData.estimateBrightnessForColor(this) == Brightness.dark ? Colors.black : Colors.white;
+    return ThemeData.estimateBrightnessForColor(this) == Brightness.light ? Colors.black : Colors.white;
   }
 }
