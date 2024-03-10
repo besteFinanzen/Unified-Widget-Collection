@@ -19,7 +19,6 @@ class DynamicThemeProvider extends InheritedWidget {
     return this != oldWidget;
   }
 }
-
 /// This widget is used to switch the theme of the app at runtime.
 /// Make sure you set the [DynamicThemeDataWidget] as parent of a [MaterialApp] or [CupertinoApp].
 /// Make sure to set these lines in the [MaterialApp] or [CupertinoApp]:
