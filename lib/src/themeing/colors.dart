@@ -4,6 +4,10 @@ extension ColorForBrigntess on Brightness {
   Color get color {
     return this == Brightness.light ? Colors.white : Colors.black;
   }
+
+  Color get contrastColor {
+    return this == Brightness.light ? Colors.black : Colors.white;
+  }
 }
 
 extension ContrastForColor on Color {
