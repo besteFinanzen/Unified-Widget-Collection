@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unified_widget_collection/src/app_layout/provider/model.dart';
 
 import '../appbar/appbar.dart';
 import '../pages/configuration.dart';
-import '../pages/provider.dart';
 
 class NestedNavigator extends StatelessWidget {
   const NestedNavigator({super.key, required this.pageConfig, required this.child});
@@ -12,8 +12,8 @@ class NestedNavigator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CurrentPageProviderWidget(
-      pageConfig: pageConfig,
+    return ListenableProvider(
+      create: (context) => CurrentPageProvider(pageConfig: pageConfig),
       child: Navigator(
         restorationScopeId: pageConfig.bottomBarTitle,
         key: pageConfig.navigatorKey,
@@ -27,6 +27,18 @@ class NestedNavigator extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class CurrentPageProvider extends UnifiedProvider {
+  final PageConfig pageConfig;
+
+  CurrentPageProvider({required this.pageConfig});
+
+  /// Use this method to get the provider outside of the widget tree
+  /// For use in the widget tree use the Provider.of method
+  static CurrentPageProvider of(BuildContext context) {
+    return Provider.of<CurrentPageProvider>(context, listen: false);
   }
 }
 
@@ -44,7 +56,7 @@ class NavigationObserver extends NavigatorObserver {
         return;
       }
       if (navigator.canPop() != true) {
-        Provider.of<AppBarProvider>(navigator.context, listen: false).title.resetForPage(pageConfig, navigator.context);
+        AppBarProvider.of(navigator.context).title.resetForPage(pageConfig, navigator.context);
       }
     });
   }

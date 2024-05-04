@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unified_widget_collection/src/app_layout/provider/model.dart';
 
 import '../appbar/appbar.dart';
 import 'configuration.dart';
 
-class PageViewProvider with ChangeNotifier {
+class PageViewProvider extends UnifiedProvider {
   final PageController _pageViewController = PageController(initialPage: 0);
   int _currentIndex;
   //Every page needs a key to be able to restore the scroll position and the stateful Widgets need a AutomaticKeepAliveClientMixin where the wantKeepAlive getter returns true
@@ -13,6 +14,12 @@ class PageViewProvider with ChangeNotifier {
   PageViewProvider({required List<PageConfig> pages, int initialIndex = 0}) :
         assert(initialIndex >= 0 && initialIndex < pages.length),
         _pageConfigurations = pages, _currentIndex = initialIndex;
+
+  /// Use this method to get the provider outside of the widget tree
+  /// For use in the widget tree use the Provider.of method
+  static PageViewProvider of(BuildContext context) {
+    return Provider.of<PageViewProvider>(context, listen: false);
+  }
 
   void animateToPage(int page, BuildContext context) {
     _pageViewController.animateToPage(page, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
@@ -31,9 +38,9 @@ class PageViewProvider with ChangeNotifier {
   void onPageChanged(int page, BuildContext context) {
     _currentIndex = page;
     if (_pageConfigurations[page].navigatorKey.currentState != null) {
-      Provider.of<AppBarProvider>(context, listen: false).setCurrentNavigator(_pageConfigurations[page].navigatorKey.currentState!);
+      AppBarProvider.of(context).setCurrentNavigator(_pageConfigurations[page].navigatorKey.currentState!);
     }
-    Provider.of<AppBarProvider>(context, listen: false).title.changeToCurrentPage(context);
+    AppBarProvider.of(context).changeToCurrentPage(context);
     notifyListeners();
   }
 
@@ -51,53 +58,4 @@ class PageViewProvider with ChangeNotifier {
     icon: Icon(e.iconInBottomBar),
     label: e.bottomBarTitle,
   )).toList();
-}
-
-
-class CurrentPageProvider extends InheritedWidget {
-  final CurrentPageProviderWidgetState pageConfig;
-
-  const CurrentPageProvider({super.key,
-    required this.pageConfig,
-    required super.child,
-  });
-
-  static CurrentPageProviderWidgetState of(context) {
-    return (context.dependOnInheritedWidgetOfExactType<CurrentPageProvider>()
-    as CurrentPageProvider)
-        .pageConfig;
-  }
-
-  @override
-  bool updateShouldNotify(CurrentPageProvider oldWidget) {
-    return this != oldWidget;
-  }
-}
-
-class CurrentPageProviderWidget extends StatefulWidget {
-  final Widget child;
-  final PageConfig pageConfig;
-  const CurrentPageProviderWidget({required this.child, required this.pageConfig, super.key});
-
-  @override
-  CurrentPageProviderWidgetState createState() => CurrentPageProviderWidgetState();
-}
-
-class CurrentPageProviderWidgetState extends State<CurrentPageProviderWidget> {
-  late final PageConfig pageConfig;
-
-  @override
-  void initState() {
-    super.initState();
-    pageConfig = widget.pageConfig;
-  }
-
-
-  @override
-  Widget build(BuildContext context) {
-    return CurrentPageProvider(
-      pageConfig: this,
-      child: widget.child,
-    );
-  }
 }

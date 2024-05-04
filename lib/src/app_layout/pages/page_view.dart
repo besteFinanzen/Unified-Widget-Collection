@@ -67,7 +67,7 @@ class PageViewWidget extends StatelessWidget {
       itemCount: Provider.of<PageViewProvider>(context).pages.length,
       itemBuilder: (context, index) {
         return NestedNavigator(
-            pageConfig: Provider.of<PageViewProvider>(context).pageConfigurations[index],
+            pageConfig: PageViewProvider.of(context).pageConfigurations[index],
             child: Provider.of<PageViewProvider>(context).pages[index]
         );
       },

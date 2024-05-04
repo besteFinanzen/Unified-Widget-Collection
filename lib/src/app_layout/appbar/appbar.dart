@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:unified_widget_collection/src/app_layout/provider/model.dart';
 
 import '../pages/configuration.dart';
 import '../pages/provider.dart';
@@ -9,7 +10,7 @@ import '../pages/provider.dart';
 ///     WidgetsBinding.instance.addPostFrameCallback((_) {
 ///       Provider.of<AppBarProvider>(context, listen: false).setTitleForPage("TITEL", CurrentPageProvider.of(context).pageConfig, context);
 ///     });
-class AppBarProvider extends ChangeNotifier {
+class AppBarProvider extends UnifiedProvider {
   final AppBarActions actions;
   final AppBarTitle title;
   NavigatorState? _currentNavigatorKey;
@@ -19,6 +20,12 @@ class AppBarProvider extends ChangeNotifier {
     final List<Widget> defaultAppBarActions = const [],
     final NavigatorState? currentNavigatorState
   }) : _currentNavigatorKey = currentNavigatorState, actions = AppBarActions(defaultActions: defaultAppBarActions), title = AppBarTitle(defaultTitle: defaultTitle);
+
+  /// Use this method to get the provider outside of the widget tree
+  /// For use in the widget tree use the Provider.of method
+  static AppBarProvider of(BuildContext context) {
+    return Provider.of<AppBarProvider>(context, listen: false);
+  }
 
   void setCurrentNavigator(NavigatorState navigatorKey) {
     _currentNavigatorKey = navigatorKey;

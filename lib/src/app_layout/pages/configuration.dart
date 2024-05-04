@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
+///Make sure to give every page a unique PageStorageKey as key
 class PageConfig {
   final Widget widget;
   final String appBarTitle;
