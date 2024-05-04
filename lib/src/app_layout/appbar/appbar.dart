@@ -71,6 +71,7 @@ class AppBarActions extends AppBarFunctions with ChangeNotifier {
     changeToCurrentPage(context);
   }
 
+  ///It's not recommended to use this method directly instead use the changeToCurrentPage method in the AppBarProvider
   @override
   void changeToCurrentPage(BuildContext context) {
     _currentActions = _pageActions[Provider.of<PageViewProvider>(context, listen: false).currentPage] ?? _defaultActions;
@@ -105,6 +106,7 @@ class AppBarTitle extends AppBarFunctions with ChangeNotifier {
     changeToCurrentPage(context);
   }
 
+  ///It's not recommended to use this method directly instead use the changeToCurrentPage method in the AppBarProvider
   @override
   void changeToCurrentPage(BuildContext context) {
     _currentTitle = _pageTitles[Provider.of<PageViewProvider>(context, listen: false).currentPage] ?? Provider.of<PageViewProvider>(context, listen: false).currentPage.appBarTitle;

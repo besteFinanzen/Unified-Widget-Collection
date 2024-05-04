@@ -52,14 +52,13 @@ class NavigationObserver extends NavigatorObserver {
       return;
     }
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      print('updateAppBarNavigator');
       if (navigator.mounted == false || navigator.context.mounted == false) {
         return;
       }
-      print('updateAppBarNavigator2');
       if (navigator.canPop() != true) {
-        print('updateAppBarNavigator3');
         AppBarProvider.of(navigator.context).title.resetForPage(pageConfig, navigator.context);
+      } else {
+        AppBarProvider.of(navigator.context).setCurrentNavigator(navigator);
       }
     });
   }
