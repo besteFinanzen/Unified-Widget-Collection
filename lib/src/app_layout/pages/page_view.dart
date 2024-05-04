@@ -7,9 +7,9 @@ import 'package:unified_widget_collection/src/app_layout/pages/provider.dart';
 class AppBarsPageView extends StatelessWidget {
   final AppBarProvider appBarProvider;
   final PageViewProvider pageViewProvider;
-  final PreferredSizeWidget appBar;
+  final PreferredSizeWidget Function(BuildContext) appBar;
   final Widget body;
-  final Widget bottomNavigationBar;
+  final Widget Function(BuildContext, PageViewProvider) bottomNavigationBar;
 
   const AppBarsPageView({
     required this.appBarProvider,
@@ -31,12 +31,18 @@ class AppBarsPageView extends StatelessWidget {
           create: (context) => pageViewProvider,
         ),
       ],
-      child: Scaffold(
-        extendBody: true,
-        extendBodyBehindAppBar: true,
-        appBar: appBar,
-        body: body,
-        bottomNavigationBar: bottomNavigationBar,
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
+            extendBody: true,
+            extendBodyBehindAppBar: true,
+            appBar: appBar(context),
+            body: body,
+            bottomNavigationBar: Consumer<PageViewProvider>(
+              builder: (context, value, _) => bottomNavigationBar(context, value),
+            )
+          );
+        }
       ),
     );
   }
