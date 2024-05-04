@@ -19,7 +19,10 @@ class AppBarProvider extends UnifiedProvider {
     final String defaultTitle = 'Startseite',
     final List<Widget> defaultAppBarActions = const [],
     final NavigatorState? currentNavigatorState
-  }) : _currentNavigatorKey = currentNavigatorState, actions = AppBarActions(defaultActions: defaultAppBarActions), title = AppBarTitle(defaultTitle: defaultTitle);
+  }) : _currentNavigatorKey = currentNavigatorState, actions = AppBarActions(defaultActions: defaultAppBarActions), title = AppBarTitle(defaultTitle: defaultTitle) {
+    actions.addListener(notifyListeners);
+    title.addListener(notifyListeners);
+  }
 
   /// Use this method to get the provider outside of the widget tree
   /// For use in the widget tree use the Provider.of method
