@@ -105,6 +105,7 @@ class AppBarTitle extends AppBarFunctions with ChangeNotifier {
   @override
   void changeToCurrentPage(BuildContext context) {
     _currentTitle = _pageTitles[Provider.of<PageViewProvider>(context, listen: false).currentPage] ?? Provider.of<PageViewProvider>(context, listen: false).currentPage.appBarTitle;
+    print('AppBarTitle: $_currentTitle');
     notifyListeners();
   }
 
