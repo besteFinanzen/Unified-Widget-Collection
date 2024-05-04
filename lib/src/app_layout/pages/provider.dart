@@ -50,3 +50,52 @@ class PageViewProvider with ChangeNotifier {
     label: e.bottomBarTitle,
   )).toList();
 }
+
+
+class CurrentPageProvider extends InheritedWidget {
+  final CurrentPageProviderWidgetState pageConfig;
+
+  const CurrentPageProvider({super.key,
+    required this.pageConfig,
+    required super.child,
+  });
+
+  static CurrentPageProviderWidgetState of(context) {
+    return (context.dependOnInheritedWidgetOfExactType<CurrentPageProvider>()
+    as CurrentPageProvider)
+        .pageConfig;
+  }
+
+  @override
+  bool updateShouldNotify(CurrentPageProvider oldWidget) {
+    return this != oldWidget;
+  }
+}
+
+class CurrentPageProviderWidget extends StatefulWidget {
+  final Widget child;
+  final PageConfig pageConfig;
+  const CurrentPageProviderWidget({required this.child, required this.pageConfig, super.key});
+
+  @override
+  CurrentPageProviderWidgetState createState() => CurrentPageProviderWidgetState();
+}
+
+class CurrentPageProviderWidgetState extends State<CurrentPageProviderWidget> {
+  late final PageConfig pageConfig;
+
+  @override
+  void initState() {
+    super.initState();
+    pageConfig = widget.pageConfig;
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return CurrentPageProvider(
+      pageConfig: this,
+      child: widget.child,
+    );
+  }
+}
