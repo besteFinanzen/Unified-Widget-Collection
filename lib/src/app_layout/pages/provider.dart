@@ -5,12 +5,14 @@ import '../appbar/appbar.dart';
 import 'configuration.dart';
 
 class PageViewProvider with ChangeNotifier {
-  final PageController _pageViewController;
-  int _currentIndex = 0;
+  final PageController _pageViewController = PageController(initialPage: 0);
+  int _currentIndex;
   //Every page needs a key to be able to restore the scroll position and the stateful Widgets need a AutomaticKeepAliveClientMixin where the wantKeepAlive getter returns true
   final List<PageConfig> _pageConfigurations;
 
-  PageViewProvider({required PageController pageViewController, required List<PageConfig> pages}) : _pageViewController = pageViewController, _pageConfigurations = pages;
+  PageViewProvider({required List<PageConfig> pages, int initialIndex = 0}) :
+        assert(initialIndex >= 0 && initialIndex < pages.length),
+        _pageConfigurations = pages, _currentIndex = initialIndex;
 
   void animateToPage(int page, BuildContext context) {
     _pageViewController.animateToPage(page, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);

@@ -29,6 +29,11 @@ class AppBarProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void changeToCurrentPage(BuildContext context) {
+    title.changeToCurrentPage(context);
+    actions.changeToCurrentPage(context);
+  }
+
   NavigatorState? get currentNavigatorKey => _currentNavigatorKey;
 }
 
