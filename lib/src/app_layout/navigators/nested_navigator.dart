@@ -58,6 +58,7 @@ class NavigationObserver extends NavigatorObserver {
       }
       print('updateAppBarNavigator2');
       if (navigator.canPop() != true) {
+        print('updateAppBarNavigator3');
         AppBarProvider.of(navigator.context).title.resetForPage(pageConfig, navigator.context);
       }
     });
