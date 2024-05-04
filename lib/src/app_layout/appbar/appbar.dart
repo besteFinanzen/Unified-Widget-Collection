@@ -44,11 +44,18 @@ class AppBarProvider extends UnifiedProvider {
     actions.changeToCurrentPage(context);
   }
 
+  void resetForPage(PageConfig pageConfig, BuildContext context) {
+    title.resetForPage(pageConfig, context);
+    actions.resetForPage(pageConfig, context);
+  }
+
   NavigatorState? get currentNavigatorKey => _currentNavigatorKey;
 }
 
 abstract class AppBarFunctions {
+  ///It's not recommended to use this method directly instead use the changeToCurrentPage method in the AppBarProvider
   void changeToCurrentPage(BuildContext context);
+  ///It's not recommended to use this method directly instead use the resetForPage method in the AppBarProvider
   void resetForPage(PageConfig pageConfig, BuildContext context);
 }
 
@@ -71,12 +78,12 @@ class AppBarActions extends AppBarFunctions with ChangeNotifier {
     changeToCurrentPage(context);
   }
 
-  ///It's not recommended to use this method directly instead use the changeToCurrentPage method in the AppBarProvider
   @override
   void changeToCurrentPage(BuildContext context) {
     _currentActions = _pageActions[Provider.of<PageViewProvider>(context, listen: false).currentPage] ?? _defaultActions;
     notifyListeners();
   }
+
 
   @override
   void resetForPage(PageConfig pageConfig, BuildContext context) {
@@ -106,11 +113,9 @@ class AppBarTitle extends AppBarFunctions with ChangeNotifier {
     changeToCurrentPage(context);
   }
 
-  ///It's not recommended to use this method directly instead use the changeToCurrentPage method in the AppBarProvider
   @override
   void changeToCurrentPage(BuildContext context) {
     _currentTitle = _pageTitles[Provider.of<PageViewProvider>(context, listen: false).currentPage] ?? Provider.of<PageViewProvider>(context, listen: false).currentPage.appBarTitle;
-    print('AppBarTitle: $_currentTitle');
     notifyListeners();
   }
 

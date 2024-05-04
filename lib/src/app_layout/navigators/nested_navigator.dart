@@ -56,6 +56,7 @@ class NavigationObserver extends NavigatorObserver {
         return;
       }
       if (navigator.canPop() != true) {
+        print('Resetting for page');
         AppBarProvider.of(navigator.context).title.resetForPage(pageConfig, navigator.context);
       } else {
         print('Setting current navigator');

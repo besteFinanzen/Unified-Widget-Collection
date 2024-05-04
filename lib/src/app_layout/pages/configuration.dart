@@ -6,6 +6,7 @@ class PageConfig {
   final String appBarTitle;
   final IconData iconInBottomBar;
   final String bottomBarTitle;
+  final List<Widget> appBarActions;
   late final GlobalKey<NavigatorState> navigatorKey;
 
   PageConfig({
@@ -13,6 +14,7 @@ class PageConfig {
     required this.appBarTitle,
     required this.iconInBottomBar,
     required this.bottomBarTitle,
+    this.appBarActions = const [],
   }) {
     navigatorKey = GlobalKey<NavigatorState>();
   }
