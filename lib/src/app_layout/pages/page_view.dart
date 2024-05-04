@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:unified_widget_collection/src/app_layout/appbar/appbar.dart';
 import 'package:unified_widget_collection/src/app_layout/navigators/nested_navigator.dart';
-import 'package:unified_widget_collection/src/app_layout/pages/widgets.dart';
+import 'package:unified_widget_collection/src/app_layout/pages/provider.dart';
 
 class AppBarsPageView extends StatelessWidget {
   final AppBarProvider appBarProvider;

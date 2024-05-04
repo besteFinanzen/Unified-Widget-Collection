@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 import '../pages/configuration.dart';
-import '../pages/widgets.dart';
+import '../pages/provider.dart';
 
 /// Provider for the app bar title and actions
 /// To set the title of a subpage use:
