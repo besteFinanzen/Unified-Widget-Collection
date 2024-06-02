@@ -5,25 +5,34 @@ import 'package:unified_widget_collection/src/app_layout/provider/model.dart';
 import '../appbar/appbar.dart';
 import 'configuration.dart';
 
-class PageViewProvider extends UnifiedProvider {
-  final PageController _pageViewController = PageController(initialPage: 0);
-  int _currentIndex;
+class TabViewProvider extends UnifiedProvider {
+  late final TabController _tabController;
   //Every page needs a key to be able to restore the scroll position and the stateful Widgets need a AutomaticKeepAliveClientMixin where the wantKeepAlive getter returns true
   final List<PageConfig> _pageConfigurations;
 
-  PageViewProvider({required List<PageConfig> pages, int initialIndex = 0}) :
+  TabViewProvider(BuildContext context, {required List<PageConfig> pages, int initialIndex = 0}) :
         assert(initialIndex >= 0 && initialIndex < pages.length),
-        _pageConfigurations = pages, _currentIndex = initialIndex;
+        _pageConfigurations = pages {
+    _tabController = TabController(length: pages.length, vsync: ScrollableState(), initialIndex: initialIndex);
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) {
+        if (_pageConfigurations[_tabController.index].navigatorKey.currentState != null) {
+          AppBarProvider.of(context).setCurrentNavigator(_pageConfigurations[_tabController.index].navigatorKey.currentState!);
+        }
+        AppBarProvider.of(context).changeToCurrentPage(context);
+        notifyListeners();
+      }
+    });
+  }
 
   /// Use this method to get the provider outside of the widget tree
   /// For use in the widget tree use the Provider.of method
-  static PageViewProvider of(BuildContext context) {
-    return Provider.of<PageViewProvider>(context, listen: false);
+  static TabViewProvider of(BuildContext context) {
+    return Provider.of<TabViewProvider>(context, listen: false);
   }
 
   void animateToPage(int page, BuildContext context) {
-    _pageViewController.animateToPage(page, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
-    onPageChanged(page, context);
+    _tabController.animateTo(page, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
   }
 
   Future animateToPageOnDifferentNavigator(int page, BuildContext context, Widget scope) async {
@@ -35,20 +44,9 @@ class PageViewProvider extends UnifiedProvider {
     }
   }
 
-  void onPageChanged(int page, BuildContext context) {
-    _currentIndex = page;
-    if (_pageConfigurations[page].navigatorKey.currentState != null) {
-      AppBarProvider.of(context).setCurrentNavigator(_pageConfigurations[page].navigatorKey.currentState!);
-    }
-    AppBarProvider.of(context).changeToCurrentPage(context);
-    notifyListeners();
-  }
+  TabController get tabController => _tabController;
 
-  int get currentIndex => _currentIndex;
-
-  PageController get pageViewController => _pageViewController;
-
-  PageConfig get currentPage => _pageConfigurations[_currentIndex];
+  PageConfig get currentPage => _pageConfigurations[_tabController.index];
 
   List<PageConfig> get pageConfigurations => _pageConfigurations;
 

@@ -6,10 +6,10 @@ import 'package:unified_widget_collection/src/app_layout/pages/provider.dart';
 
 class AppBarsPageView extends StatelessWidget {
   final AppBarProvider appBarProvider;
-  final PageViewProvider pageViewProvider;
+  final TabViewProvider pageViewProvider;
   final PreferredSizeWidget Function(BuildContext) appBar;
   final Widget body;
-  final Widget Function(BuildContext, PageViewProvider) bottomNavigationBar;
+  final Widget Function(BuildContext, TabViewProvider) bottomNavigationBar;
 
   const AppBarsPageView({
     required this.appBarProvider,
@@ -27,7 +27,7 @@ class AppBarsPageView extends StatelessWidget {
         ListenableProvider<AppBarProvider>(
           create: (context) => appBarProvider,
         ),
-        ListenableProvider<PageViewProvider>(
+        ListenableProvider<TabViewProvider>(
           create: (context) => pageViewProvider,
         ),
       ],
@@ -38,7 +38,7 @@ class AppBarsPageView extends StatelessWidget {
             extendBodyBehindAppBar: true,
             appBar: appBar(context),
             body: body,
-            bottomNavigationBar: Consumer<PageViewProvider>(
+            bottomNavigationBar: Consumer<TabViewProvider>(
               builder: (context, value, _) => bottomNavigationBar(context, value),
             )
           );
@@ -54,23 +54,13 @@ class PageViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageView.builder(
-      restorationId: 'home_page',
+   return TabBarView(
       key: const PageStorageKey('home_page'),
-      controller: Provider.of<PageViewProvider>(context).pageViewController,
-      allowImplicitScrolling: true,
-      onPageChanged: (index) {
-        print('PageViewWidget: $index');
-        Provider.of<PageViewProvider>(context, listen: false).onPageChanged(index, context);
-        onPageChanged?.call(index);
-      },
-      itemCount: Provider.of<PageViewProvider>(context).pages.length,
-      itemBuilder: (context, index) {
-        return NestedNavigator(
-            pageConfig: PageViewProvider.of(context).pageConfigurations[index],
-            child: Provider.of<PageViewProvider>(context).pages[index]
-        );
-      },
+      controller: Provider.of<TabViewProvider>(context).tabController,
+      children: Provider.of<TabViewProvider>(context).pages.map((e) => NestedNavigator(
+        pageConfig: TabViewProvider.of(context).pageConfigurations[Provider.of<TabViewProvider>(context).pages.indexOf(e)],
+        child: e
+      )).toList(),
     );
   }
 }
