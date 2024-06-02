@@ -29,8 +29,8 @@ class TabViewProvider extends UnifiedProvider {
   }
 
   void onPageChanged(BuildContext context) {
-    if (_pageConfigurations[tabController.index].navigatorKey.currentState != null) {
-      AppBarProvider.of(context).setCurrentNavigator(_pageConfigurations[tabController.index].navigatorKey.currentState!);
+    if (_pageConfigurations[currentPageIndex].navigatorKey.currentState != null) {
+      AppBarProvider.of(context).setCurrentNavigator(_pageConfigurations[currentPageIndex].navigatorKey.currentState!);
     }
     AppBarProvider.of(context).changeToCurrentPage(context);
     notifyListeners();
@@ -54,7 +54,9 @@ class TabViewProvider extends UnifiedProvider {
     return _tabController!;
   }
 
-  PageConfig get currentPage => _pageConfigurations[_tabController?.index ?? initialIndex];
+  PageConfig get currentPage => _pageConfigurations[currentPageIndex];
+
+  int get currentPageIndex => _tabController?.index ?? initialIndex;
 
   List<PageConfig> get pageConfigurations => _pageConfigurations;
 
