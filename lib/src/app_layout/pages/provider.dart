@@ -12,14 +12,16 @@ class TabViewProvider extends UnifiedProvider {
 
   TabViewProvider(BuildContext context, {required List<PageConfig> pages, int initialIndex = 0}) :
         assert(initialIndex >= 0 && initialIndex < pages.length),
-        _pageConfigurations = pages {
-    _tabController = TabController(length: pages.length, vsync: ScrollableState(), initialIndex: initialIndex);
-  }
+        _pageConfigurations = pages;
 
   /// Use this method to get the provider outside of the widget tree
   /// For use in the widget tree use the Provider.of method
   static TabViewProvider of(BuildContext context) {
     return Provider.of<TabViewProvider>(context, listen: false);
+  }
+
+  void initTabController(TickerProvider vsync) {
+    _tabController = TabController(length: _pageConfigurations.length, vsync: vsync, initialIndex: 0);
   }
 
   void onPageChanged(BuildContext context) {

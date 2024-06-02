@@ -4,14 +4,14 @@ import 'package:unified_widget_collection/src/app_layout/appbar/appbar.dart';
 import 'package:unified_widget_collection/src/app_layout/navigators/nested_navigator.dart';
 import 'package:unified_widget_collection/src/app_layout/pages/provider.dart';
 
-class AppBarsPageView extends StatelessWidget {
+class AppBarsTabView extends StatelessWidget {
   final AppBarProvider appBarProvider;
   final TabViewProvider tabViewProvider;
   final PreferredSizeWidget Function(BuildContext) appBar;
   final Widget body;
   final Widget Function(BuildContext, TabViewProvider) bottomNavigationBar;
 
-  const AppBarsPageView({
+  const AppBarsTabView({
     required this.appBarProvider,
     required this.tabViewProvider,
     required this.body,
@@ -48,12 +48,18 @@ class AppBarsPageView extends StatelessWidget {
   }
 }
 
-class TabViewWidget extends StatelessWidget {
+class TabViewWidget extends StatefulWidget {
   final Function(int)? onPageChanged;
   const TabViewWidget({super.key, this.onPageChanged});
 
   @override
+  State<TabViewWidget> createState() => _TabViewWidgetState();
+}
+
+class _TabViewWidgetState extends State<TabViewWidget> with SingleTickerProviderStateMixin {
+  @override
   Widget build(BuildContext context) {
+   Provider.of<TabViewProvider>(context).initTabController(this);
    Provider.of<TabViewProvider>(context).tabController.addListener(() {
       if (Provider.of<TabViewProvider>(context).tabController.indexIsChanging) {
         Provider.of<TabViewProvider>(context).onPageChanged(context);
