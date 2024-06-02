@@ -35,6 +35,7 @@ class TabViewProvider extends UnifiedProvider {
       return;
     }
     lastIndexOfPage = currentPageIndex;
+    print('Page changed to $currentPageIndex');
     if (_pageConfigurations[currentPageIndex].navigatorKey.currentState != null) {
       AppBarProvider.of(context).setCurrentNavigator(_pageConfigurations[currentPageIndex].navigatorKey.currentState!);
     }
