@@ -49,8 +49,8 @@ class AppBarsTabView extends StatelessWidget {
 }
 
 class TabViewWidget extends StatefulWidget {
-  final Function(int)? onPageChanged;
-  const TabViewWidget({super.key, this.onPageChanged});
+  final ScrollPhysics? physics;
+  const TabViewWidget({this.physics, super.key});
 
   @override
   State<TabViewWidget> createState() => _TabViewWidgetState();
@@ -60,11 +60,15 @@ class _TabViewWidgetState extends State<TabViewWidget> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
    TabViewProvider.of(context).initTabController(this);
-   return _CustomTabView();
+   return _CustomTabView(physics: widget.physics);
   }
 }
 
 class _CustomTabView extends StatelessWidget {
+  final ScrollPhysics? physics;
+
+  const _CustomTabView({this.physics});
+
   @override
   Widget build(BuildContext context) {
     TabViewProvider.of(context).tabController.addListener(() {
