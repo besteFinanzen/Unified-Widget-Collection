@@ -6,7 +6,7 @@ import '../appbar/appbar.dart';
 import 'configuration.dart';
 
 class TabViewProvider extends UnifiedProvider {
-  late final TabController _tabController;
+  TabController? _tabController;
   //Every page needs a key to be able to restore the scroll position and the stateful Widgets need a AutomaticKeepAliveClientMixin where the wantKeepAlive getter returns true
   final List<PageConfig> _pageConfigurations;
 
@@ -21,19 +21,22 @@ class TabViewProvider extends UnifiedProvider {
   }
 
   void initTabController(TickerProvider vsync) {
+    if (_tabController != null) {
+      return;
+    }
     _tabController = TabController(length: _pageConfigurations.length, vsync: vsync, initialIndex: 0);
   }
 
   void onPageChanged(BuildContext context) {
-    if (_pageConfigurations[_tabController.index].navigatorKey.currentState != null) {
-      AppBarProvider.of(context).setCurrentNavigator(_pageConfigurations[_tabController.index].navigatorKey.currentState!);
+    if (_pageConfigurations[tabController.index].navigatorKey.currentState != null) {
+      AppBarProvider.of(context).setCurrentNavigator(_pageConfigurations[tabController.index].navigatorKey.currentState!);
     }
     AppBarProvider.of(context).changeToCurrentPage(context);
     notifyListeners();
   }
 
   void animateToPage(int page, BuildContext context) {
-    _tabController.animateTo(page, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+    tabController.animateTo(page, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
   }
 
   Future animateToPageOnDifferentNavigator(int page, BuildContext context, Widget scope) async {
@@ -45,9 +48,12 @@ class TabViewProvider extends UnifiedProvider {
     }
   }
 
-  TabController get tabController => _tabController;
+  TabController get tabController {
+    assert(_tabController != null, 'TabController not initialized');
+    return _tabController!;
+  }
 
-  PageConfig get currentPage => _pageConfigurations[_tabController.index];
+  PageConfig get currentPage => _pageConfigurations[tabController.index];
 
   List<PageConfig> get pageConfigurations => _pageConfigurations;
 
