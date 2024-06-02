@@ -60,11 +60,6 @@ class _TabViewWidgetState extends State<TabViewWidget> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
    TabViewProvider.of(context).initTabController(this);
-   TabViewProvider.of(context).tabController.addListener(() {
-      if (TabViewProvider.of(context).tabController.indexIsChanging) {
-        TabViewProvider.of(context).onPageChanged(context);
-      }
-    });
    return _CustomTabView();
   }
 }
@@ -72,6 +67,11 @@ class _TabViewWidgetState extends State<TabViewWidget> with SingleTickerProvider
 class _CustomTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    TabViewProvider.of(context).tabController.addListener(() {
+      if (TabViewProvider.of(context).tabController.indexIsChanging) {
+        TabViewProvider.of(context).onPageChanged(context);
+      }
+    });
     return TabBarView(
       key: const PageStorageKey('home_page'),
       controller: TabViewProvider.of(context).tabController,
