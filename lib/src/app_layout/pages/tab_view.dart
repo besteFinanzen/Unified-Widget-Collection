@@ -59,8 +59,8 @@ class TabViewWidget extends StatefulWidget {
 class _TabViewWidgetState extends State<TabViewWidget> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-   Provider.of<TabViewProvider>(context).initTabController(this);
-   Provider.of<TabViewProvider>(context).tabController.addListener(() {
+   Provider.of<TabViewProvider>(context, listen: false).initTabController(this);
+   Provider.of<TabViewProvider>(context, listen: false).tabController.addListener(() {
       if (Provider.of<TabViewProvider>(context).tabController.indexIsChanging) {
         Provider.of<TabViewProvider>(context).onPageChanged(context);
       }
