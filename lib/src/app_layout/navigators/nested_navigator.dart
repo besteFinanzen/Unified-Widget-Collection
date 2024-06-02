@@ -65,31 +65,26 @@ class NavigationObserver extends NavigatorObserver {
 
   @override
   void didPop(Route route, Route? previousRoute) {
-    print('didPop');
     updateAppBarNavigator(route.navigator);
   }
 
   @override
   void didPush(Route route, Route? previousRoute) {
-    print('didPush');
     updateAppBarNavigator(route.navigator);
   }
 
   @override
   void didRemove(Route route, Route? previousRoute) {
-    print('didRemove');
     updateAppBarNavigator(route.navigator);
   }
 
   @override
   void didReplace({Route? newRoute, Route? oldRoute}) {
-    print('didReplace');
     updateAppBarNavigator(newRoute?.navigator);
   }
 
   @override
   void didStartUserGesture(Route route, Route? previousRoute) {
-    print('didStartUserGesture');
     updateAppBarNavigator(route.navigator);
   }
 }
