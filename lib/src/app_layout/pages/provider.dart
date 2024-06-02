@@ -10,10 +10,11 @@ class TabViewProvider extends UnifiedProvider {
   //Every page needs a key to be able to restore the scroll position and the stateful Widgets need a AutomaticKeepAliveClientMixin where the wantKeepAlive getter returns true
   final List<PageConfig> _pageConfigurations;
   final int initialIndex;
+  int lastIndexOfPage = 0;
 
   TabViewProvider(BuildContext context, {required List<PageConfig> pages, this.initialIndex = 0}) :
         assert(initialIndex >= 0 && initialIndex < pages.length),
-        _pageConfigurations = pages;
+        _pageConfigurations = pages, lastIndexOfPage = initialIndex;
 
   /// Use this method to get the provider outside of the widget tree
   /// For use in the widget tree use the Provider.of method
@@ -29,6 +30,10 @@ class TabViewProvider extends UnifiedProvider {
   }
 
   void onPageChanged(BuildContext context) {
+    if (currentPageIndex == lastIndexOfPage) {
+      return;
+    }
+    lastIndexOfPage = currentPageIndex;
     if (_pageConfigurations[currentPageIndex].navigatorKey.currentState != null) {
       AppBarProvider.of(context).setCurrentNavigator(_pageConfigurations[currentPageIndex].navigatorKey.currentState!);
     }

@@ -68,13 +68,8 @@ class _CustomTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TabViewProvider.of(context).tabController.addListener(() {
-      print('TabControllerListener');
       if (!context.mounted) return;
-      print('TabControllerListener2');
-      if (TabViewProvider.of(context).tabController.indexIsChanging) {
-        print('TabControllerListener3');
-        TabViewProvider.of(context).onPageChanged(context);
-      }
+      TabViewProvider.of(context).onPageChanged(context);
     });
     return TabBarView(
       key: const PageStorageKey('home_page'),
