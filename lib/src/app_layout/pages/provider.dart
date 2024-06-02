@@ -9,8 +9,9 @@ class TabViewProvider extends UnifiedProvider {
   TabController? _tabController;
   //Every page needs a key to be able to restore the scroll position and the stateful Widgets need a AutomaticKeepAliveClientMixin where the wantKeepAlive getter returns true
   final List<PageConfig> _pageConfigurations;
+  final int initialIndex;
 
-  TabViewProvider(BuildContext context, {required List<PageConfig> pages, int initialIndex = 0}) :
+  TabViewProvider(BuildContext context, {required List<PageConfig> pages, this.initialIndex = 0}) :
         assert(initialIndex >= 0 && initialIndex < pages.length),
         _pageConfigurations = pages;
 
@@ -53,7 +54,7 @@ class TabViewProvider extends UnifiedProvider {
     return _tabController!;
   }
 
-  PageConfig get currentPage => _pageConfigurations[tabController.index];
+  PageConfig get currentPage => _pageConfigurations[_tabController?.index ?? initialIndex];
 
   List<PageConfig> get pageConfigurations => _pageConfigurations;
 
