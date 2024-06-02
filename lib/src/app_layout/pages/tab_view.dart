@@ -6,14 +6,14 @@ import 'package:unified_widget_collection/src/app_layout/pages/provider.dart';
 
 class AppBarsPageView extends StatelessWidget {
   final AppBarProvider appBarProvider;
-  final TabViewProvider pageViewProvider;
+  final TabViewProvider tabViewProvider;
   final PreferredSizeWidget Function(BuildContext) appBar;
   final Widget body;
   final Widget Function(BuildContext, TabViewProvider) bottomNavigationBar;
 
   const AppBarsPageView({
     required this.appBarProvider,
-    required this.pageViewProvider,
+    required this.tabViewProvider,
     required this.body,
     required this.bottomNavigationBar,
     required this.appBar,
@@ -28,7 +28,7 @@ class AppBarsPageView extends StatelessWidget {
           create: (context) => appBarProvider,
         ),
         ListenableProvider<TabViewProvider>(
-          create: (context) => pageViewProvider,
+          create: (context) => tabViewProvider,
         ),
       ],
       child: Builder(
@@ -48,12 +48,17 @@ class AppBarsPageView extends StatelessWidget {
   }
 }
 
-class PageViewWidget extends StatelessWidget {
+class TabViewWidget extends StatelessWidget {
   final Function(int)? onPageChanged;
-  const PageViewWidget({super.key, this.onPageChanged});
+  const TabViewWidget({super.key, this.onPageChanged});
 
   @override
   Widget build(BuildContext context) {
+   Provider.of<TabViewProvider>(context).tabController.addListener(() {
+      if (Provider.of<TabViewProvider>(context).tabController.indexIsChanging) {
+        Provider.of<TabViewProvider>(context).onPageChanged(context);
+      }
+    });
    return TabBarView(
       key: const PageStorageKey('home_page'),
       controller: Provider.of<TabViewProvider>(context).tabController,

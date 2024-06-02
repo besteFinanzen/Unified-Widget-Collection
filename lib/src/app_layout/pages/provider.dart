@@ -14,21 +14,20 @@ class TabViewProvider extends UnifiedProvider {
         assert(initialIndex >= 0 && initialIndex < pages.length),
         _pageConfigurations = pages {
     _tabController = TabController(length: pages.length, vsync: ScrollableState(), initialIndex: initialIndex);
-    _tabController.addListener(() {
-      if (_tabController.indexIsChanging) {
-        if (_pageConfigurations[_tabController.index].navigatorKey.currentState != null) {
-          AppBarProvider.of(context).setCurrentNavigator(_pageConfigurations[_tabController.index].navigatorKey.currentState!);
-        }
-        AppBarProvider.of(context).changeToCurrentPage(context);
-        notifyListeners();
-      }
-    });
   }
 
   /// Use this method to get the provider outside of the widget tree
   /// For use in the widget tree use the Provider.of method
   static TabViewProvider of(BuildContext context) {
     return Provider.of<TabViewProvider>(context, listen: false);
+  }
+
+  void onPageChanged(BuildContext context) {
+    if (_pageConfigurations[_tabController.index].navigatorKey.currentState != null) {
+      AppBarProvider.of(context).setCurrentNavigator(_pageConfigurations[_tabController.index].navigatorKey.currentState!);
+    }
+    AppBarProvider.of(context).changeToCurrentPage(context);
+    notifyListeners();
   }
 
   void animateToPage(int page, BuildContext context) {

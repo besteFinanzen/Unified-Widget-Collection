@@ -3,7 +3,7 @@ export 'src/themeing/theme_provider.dart' show DynamicThemeDataWidget, DynamicTh
 export 'src/themeing/colors.dart' show ColorForBrigntess, ContrastForColor;
 
 //App Layout
-export 'src/app_layout/pages/tab_view.dart' show AppBarsPageView, PageViewWidget;
+export 'src/app_layout/pages/tab_view.dart' show AppBarsPageView, TabViewWidget;
 export 'src/app_layout/appbar/appbar.dart' show AppBarProvider;
 export 'src/app_layout/pages/configuration.dart' show PageConfig;
 export 'src/app_layout/pages/provider.dart' show TabViewProvider;
