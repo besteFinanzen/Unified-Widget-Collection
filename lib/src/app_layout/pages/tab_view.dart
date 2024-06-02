@@ -65,12 +65,19 @@ class _TabViewWidgetState extends State<TabViewWidget> with SingleTickerProvider
         TabViewProvider.of(context).onPageChanged(context);
       }
     });
-   return TabBarView(
+   return _CustomTabView();
+  }
+}
+
+class _CustomTabView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return TabBarView(
       key: const PageStorageKey('home_page'),
       controller: TabViewProvider.of(context).tabController,
       children: TabViewProvider.of(context).pages.map((e) => NestedNavigator(
-        pageConfig: TabViewProvider.of(context).pageConfigurations[TabViewProvider.of(context).pages.indexOf(e)],
-        child: e
+          pageConfig: TabViewProvider.of(context).pageConfigurations[TabViewProvider.of(context).pages.indexOf(e)],
+          child: e
       )).toList(),
     );
   }
