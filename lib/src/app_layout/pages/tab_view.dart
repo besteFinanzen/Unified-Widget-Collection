@@ -59,17 +59,17 @@ class TabViewWidget extends StatefulWidget {
 class _TabViewWidgetState extends State<TabViewWidget> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-   Provider.of<TabViewProvider>(context, listen: false).initTabController(this);
-   Provider.of<TabViewProvider>(context, listen: false).tabController.addListener(() {
-      if (Provider.of<TabViewProvider>(context).tabController.indexIsChanging) {
-        Provider.of<TabViewProvider>(context).onPageChanged(context);
+   TabViewProvider.of(context).initTabController(this);
+   TabViewProvider.of(context).tabController.addListener(() {
+      if (TabViewProvider.of(context).tabController.indexIsChanging) {
+        TabViewProvider.of(context).onPageChanged(context);
       }
     });
    return TabBarView(
       key: const PageStorageKey('home_page'),
-      controller: Provider.of<TabViewProvider>(context).tabController,
-      children: Provider.of<TabViewProvider>(context).pages.map((e) => NestedNavigator(
-        pageConfig: TabViewProvider.of(context).pageConfigurations[Provider.of<TabViewProvider>(context).pages.indexOf(e)],
+      controller: TabViewProvider.of(context).tabController,
+      children: TabViewProvider.of(context).pages.map((e) => NestedNavigator(
+        pageConfig: TabViewProvider.of(context).pageConfigurations[TabViewProvider.of(context).pages.indexOf(e)],
         child: e
       )).toList(),
     );
