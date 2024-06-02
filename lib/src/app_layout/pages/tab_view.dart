@@ -70,7 +70,7 @@ class _CustomTabView extends StatelessWidget {
     TabViewProvider.of(context).tabController.addListener(() {
       print('TabControllerListener');
       if (!context.mounted) return;
-      print('TabControllerListener');
+      print('TabControllerListener2');
       if (TabViewProvider.of(context).tabController.indexIsChanging) {
         TabViewProvider.of(context).onPageChanged(context);
       }
