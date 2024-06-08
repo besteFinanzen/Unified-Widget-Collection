@@ -58,6 +58,12 @@ class TabViewWidget extends StatefulWidget {
 
 class _TabViewWidgetState extends State<TabViewWidget> with SingleTickerProviderStateMixin {
   @override
+  void dispose() {
+    TabViewProvider.of(context).tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
    TabViewProvider.of(context).initTabController(this);
    return _CustomTabView(physics: widget.physics);

@@ -56,7 +56,7 @@ class TabViewProvider extends UnifiedProvider {
   }
 
   TabController get tabController {
-    assert(_tabController != null, 'TabController not initialized');
+    assert(_tabController != null, 'No TabViewWidget found in the widget tree. Please add a TabViewWidget to the widget tree.');
     return _tabController!;
   }
 
