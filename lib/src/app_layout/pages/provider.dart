@@ -48,12 +48,15 @@ class TabViewProvider extends UnifiedProvider {
 
   Future animateToPageOnDifferentNavigator(int page, BuildContext context, Widget scope) async {
     animateToPage(page, context);
-    await Future.delayed(const Duration(seconds: 3));
-    if (_pageConfigurations[page].navigatorKey.currentState != null) {
-      await _pageConfigurations[page].navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) => scope));
-    } else {
+    int maxIterations = 3;
+    while (_pageConfigurations[page].navigatorKey.currentState == null && maxIterations > 0) {
+      await Future.delayed(const Duration(milliseconds: 300));
+      maxIterations--;
+    }
+    if (maxIterations == 0) {
       throw Exception('Navigator not found');
     }
+    await _pageConfigurations[page].navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) => scope));
   }
 
   TabController get tabController {
