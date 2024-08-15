@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unified_widget_collection/src/app_layout/navigators/nested_navigator.dart';
 import 'package:unified_widget_collection/src/app_layout/provider/model.dart';
 
 import '../appbar/appbar.dart';
@@ -48,8 +49,8 @@ class TabViewProvider extends UnifiedProvider {
 
   Future animateToPageOnDifferentNavigator(int page, BuildContext context, Widget scope) async {
     animateToPage(page, context);
-    if (_pageConfigurations[page].navigatorKey.currentState != null) {
-      await _pageConfigurations[page].navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) => scope));
+    if (CurrentPageProvider.of(context).pageConfig.navigatorKey.currentState != null) {
+      await CurrentPageProvider.of(context).pageConfig.navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) => scope));
     } else {
       throw Exception('Navigator not found');
     }
