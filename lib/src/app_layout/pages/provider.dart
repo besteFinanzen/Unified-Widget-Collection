@@ -48,9 +48,9 @@ class TabViewProvider extends UnifiedProvider {
 
   Future animateToPageOnDifferentNavigator(int page, BuildContext context, Widget scope) async {
     animateToPage(page, context);
-    int maxIterations = 3;
+    int maxIterations = 20;
     while (_pageConfigurations[page].navigatorKey.currentState == null && maxIterations > 0) {
-      await Future.delayed(const Duration(milliseconds: 300));
+      await Future.delayed(const Duration(milliseconds: 50));
       maxIterations--;
     }
     if (maxIterations == 0) {
