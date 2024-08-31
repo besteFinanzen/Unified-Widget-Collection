@@ -59,7 +59,7 @@ class TabViewWidget extends StatefulWidget {
 class _TabViewWidgetState extends State<TabViewWidget> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
-    TabViewProvider.of(context).tabController.dispose();
+    //TabViewProvider.of(context).tabController.dispose(); Was commented out because it caused an error :-)
     super.dispose();
   }
 
@@ -85,6 +85,7 @@ class _CustomTabView extends StatelessWidget {
       key: const PageStorageKey('home_page'),
       controller: TabViewProvider.of(context).tabController,
       children: TabViewProvider.of(context).pages.map((e) => NestedNavigator(
+          key: PageStorageKey(TabViewProvider.of(context).pageConfigurations[TabViewProvider.of(context).pages.indexOf(e)].navigatorKey.toString()),
           pageConfig: TabViewProvider.of(context).pageConfigurations[TabViewProvider.of(context).pages.indexOf(e)],
           child: e
       )).toList(),
